@@ -15,25 +15,30 @@ public class BooksController {
     @Autowired
     private BookService bookService;
 
-    @GetMapping("queryForList")
+    @GetMapping("/queryForList")
     public List<BooksEntity> getBooks(){
         return bookService.getBooks();
     }
 
-    @GetMapping("queryForNumber")
+    @GetMapping("/queryForNumber")
     public int getBooksNumber(){
         return bookService.getBooksNumber();
     }
 
-    @GetMapping("queryBooksMap")
+    @GetMapping("/queryBooksMap")
     public Map<String,Object> getBooksMap(){
         return bookService.getBooksByJdbcTemplate();
     }
 
 
 
-    @GetMapping("queryBooksByName")
+    @GetMapping("/queryBooksByName")
     public List<BooksEntity> getBooksByName(){
         return bookService.getBooksByName();
+    }
+
+    @GetMapping("/queryBooksByNamedParameterJdbcTemplate")
+    public List<BooksEntity> getBooksByNamedParameterJdbcTemplate(){
+        return bookService.getBooksByNamedParameterJdbcTemplate();
     }
 }

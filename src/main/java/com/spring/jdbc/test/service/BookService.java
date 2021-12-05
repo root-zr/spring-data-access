@@ -7,9 +7,12 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -47,6 +50,28 @@ public class BookService {
 
         return map;
     }
+
+    public  List<BooksEntity> getBooksByNamedParameterJdbcTemplate(){
+//        Map<String,Object> map = new HashMap<>();
+//        map.put("name","西游记");
+//        map.put("author","吴承恩");
+//
+//        List<BooksEntity> list = namedParameterJdbcTemplate.query("select * from books where name = :name and author = :author ;",
+//                map,new BeanPropertyRowMapper<>(BooksEntity.class));
+
+//       也可以用下面的方式实现
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
+                .addValue("name","西游记")
+                .addValue("author","吴承恩");
+
+        List<BooksEntity> list = namedParameterJdbcTemplate.query("select * from books where name = :name and author = :author ;",
+                sqlParameterSource,new BeanPropertyRowMapper<>(BooksEntity.class));
+
+        log.info("books  is {}",list);
+
+        return list;
+    }
+
 
     public  List<BooksEntity> getBooksByName(){
         List<BooksEntity> list = jdbcTemplate.query("select * from books where name = ? and author = ? ;",

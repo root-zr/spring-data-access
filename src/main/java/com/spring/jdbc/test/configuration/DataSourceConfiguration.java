@@ -1,6 +1,9 @@
 package com.spring.jdbc.test.configuration;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -15,17 +18,24 @@ import javax.sql.DataSource;
 // 开启事务管理
 @EnableTransactionManagement
 public class DataSourceConfiguration {
+
     // 创建数据库连接池
     @Bean
-    public DriverManagerDataSource getDataSource(){
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/test?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8");
-        dataSource.setUsername("root");
-        dataSource.setPassword("123456");
-
-        return dataSource;
+    @ConfigurationProperties(prefix = "spring.datasource")
+    public DataSource getDataSource(){
+        return new DriverManagerDataSource();
     }
+//    创建数据库连接池的另一种实现
+//    @Bean
+//    public DriverManagerDataSource getDataSource(){
+//        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+//        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+//        dataSource.setUrl("jdbc:mysql://localhost:3306/test?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8");
+//        dataSource.setUsername("root");
+//        dataSource.setPassword("123456");
+//
+//        return dataSource;
+//    }
 
     // 创建JdbcTemplate对象
     @Bean("jdbcTemplate")
